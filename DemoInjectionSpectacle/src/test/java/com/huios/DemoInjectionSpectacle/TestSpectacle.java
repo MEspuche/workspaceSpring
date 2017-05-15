@@ -35,6 +35,9 @@ public class TestSpectacle {
 		Performeur Martin = (Performeur) appContext.getBean("Martin");
 		Martin.performe();
 		
+		System.out.println("--------------------Mon musicien-----------------");
+		Performeur monMusicien = (Performeur) appContext.getBean("monMusicien");
+		monMusicien.performe();
 	}
 
 }
