@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="saxophone" class="com.huios.DemoInjectionSpectacle.Saxophone"
+		scope="prototype">
+	</bean>
+
+	<bean id="violon" class="com.huios.DemoInjectionSpectacle.Violon"
+		scope="prototype" primary="true">
+	</bean>
+
+	<bean id="guitare" class="com.huios.DemoInjectionSpectacle.Guitare"
+		scope="prototype">
+	</bean>
+
+	<bean name="Olivier" class="com.huios.DemoInjectionSpectacle.Musicien">
+		<property name="instrument" ref="saxophone" />
+		<property name="morceau" value="Vive le vent..." />
+	</bean>
+
+	<bean name="Caroline" class="com.huios.DemoInjectionSpectacle.Musicien">
+		<property name="instrument" ref="violon" />
+	</bean>
+
+	<bean name="JeanMarc" class="com.huios.DemoInjectionSpectacle.Musicien">
+		<property name="instrument" ref="saxophone" />
+	</bean>
+
+	<bean name="Julien"
+		class="com.huios.DemoInjectionSpectacle.MusicienPolyinstruments">
+		<property name="instruments">
+			<list>
+				<ref bean="saxophone" />
+				<ref bean="saxophone" />
+				<ref bean="violon" />
+				<ref bean="guitare" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="Alain"
+		class="com.huios.DemoInjectionSpectacle.MusicienPolyinstruments">
+		<property name="instruments">
+			<set>
+				<ref bean="saxophone" />
+				<ref bean="saxophone" />
+				<ref bean="violon" />
+				<ref bean="guitare" />
+			</set>
+		</property>
+	</bean>
+
+	<bean name="Louis" class="com.huios.DemoInjectionSpectacle.Musicien">
+		<property name="instrument" ref="violon" />
+		<property name="morceau" value="#{Olivier.morceau}" />
+	</bean>
+
+	<bean id="instrument" class="com.huios.DemoInjectionSpectacle.Saxophone">
+	</bean>
+	
+	<bean id="Michel" class="com.huios.DemoInjectionSpectacle.Musicien" autowire="byName">
+		<property name="morceau" value="petit ours brun"></property>
+	</bean>
+	
+	<bean id="Maurice" class="com.huios.DemoInjectionSpectacle.Musicien" autowire="byType">
+		<property name="morceau" value="petit ours brun"></property>
+	</bean>
+	
+	<bean name="parent" class="com.huios.DemoInjectionSpectacle.Musicien" abstract="true">
+		<property name="morceau" value="la marseillaise"/>
+		<property name="instrument" ref="violon"/>
+	</bean>
+	
+	<bean name="Martin" parent="parent">
+		<property name="instrument" ref="saxophone"/>
+	</bean>
+	
+	
+
+</beans>
