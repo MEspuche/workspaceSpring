@@ -2,47 +2,64 @@ package com.huios.dao;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.huios.metier.User;
 
+@Transactional
 @Repository
 public class DaoImplHibernate implements IDao {
 
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	// création de la session
+	private Session getSession() {
+		return sessionFactory.getCurrentSession();
+	}
+
 	@Override
 	public void ajouterUser(User u) {
-		System.out.println("AJOUTER A PARTIE D'HIBERNATE");
-
+		getSession().save(u);
 	}
 
 	@Override
 	public List<User> listerUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		String req = "from User";
+		Query query = getSession().createQuery(req);
+		return query.list();
 	}
 
 	@Override
 	public void supprimerUser(long id) {
-		// TODO Auto-generated method stub
+		getSession().delete(getSession().get(User.class, id));
 
 	}
 
 	@Override
 	public User trouverUser(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().get(User.class, id);
 	}
 
 	@Override
 	public List<User> listerParMC(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+		String req = "FROM User as u WHERE u.nom like :nom";
+		Query query = getSession().createQuery(req);
+		query.setParameter("nom", "%" + nom + "%");
+		return query.getResultList();
 	}
 
 	@Override
-	public List<User> liserParNom(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> listerParNom(String nom) {
+		String req = "FROM User as u WHERE u.nom = :nom" ;
+		Query query = getSession().createQuery(req);
+		query.setParameter("nom", nom);
+		return query.getResultList();
 	}
 
 }

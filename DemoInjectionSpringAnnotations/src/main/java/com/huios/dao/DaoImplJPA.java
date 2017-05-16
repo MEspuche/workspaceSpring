@@ -2,48 +2,60 @@ package com.huios.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.huios.metier.User;
 
+@Transactional
 @Repository
 public class DaoImplJPA implements IDao {
 
+	@PersistenceContext(name="testPU")
+	EntityManager em;
+	
+	
 	
 	@Override
 	public void ajouterUser(User u) {
-		System.out.println("AJOUTER A PARTIE DE JPA");
-		
+		em.persist(u);
 	}
 
 	@Override
 	public List<User> listerUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		String req = "SELECT u FROM User u";
+		Query query = em.createQuery(req);
+		return query.getResultList();
 	}
 
 	@Override
 	public void supprimerUser(long id) {
-		// TODO Auto-generated method stub
-
+		em.remove(em.find(User.class, id));
 	}
 
 	@Override
 	public User trouverUser(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.find(User.class, id);
 	}
 
 	@Override
 	public List<User> listerParMC(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+		String req = "SELECT u FROM User u WHERE u.nom LIKE :nom";
+		Query query = em.createQuery(req);
+		query.setParameter("nom", "%"+nom+"%");
+		return query.getResultList();
 	}
 
 	@Override
-	public List<User> liserParNom(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> listerParNom(String nom) {
+		String req = "SELECT u FROM User u WHERE u.nom = :nom";
+		Query query = em.createQuery(req);
+		query.setParameter("nom", nom);
+		return query.getResultList();
 	}
 
 }

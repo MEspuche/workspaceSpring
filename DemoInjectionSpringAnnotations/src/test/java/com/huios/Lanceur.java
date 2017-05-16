@@ -1,5 +1,7 @@
 package com.huios;
 
+import java.util.List;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.huios.metier.User;
@@ -15,11 +17,25 @@ public class Lanceur {
 		IService service = (IService) appContext.getBean("serviceImpl");
 		User u = (User) appContext.getBean("user");
 		User u2 = (User) appContext.getBean("user");
-		u.setNom("toto");
+		u.setNom("y");
+		u.setPrenom("y");
 		System.out.println(u.getNom());
-		System.out.println(u2.getNom());
 
-		service.ajouterUser(u);
+		//service.ajouterUser(u);
+		
+		
+		List<User> list= service.listerUsers();
+		for(User user : list)
+		{
+			System.out.println(user);
+		}
+		
+		List<User> list2= service.listerParMC("o");
+		for(User user : list2)
+		{
+			System.out.println(user);
+		}
+		
 		// 4- Detruire le contexte
 		appContext.close();
 
