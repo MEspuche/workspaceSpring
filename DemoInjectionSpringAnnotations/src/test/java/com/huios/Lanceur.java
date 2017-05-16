@@ -14,6 +14,10 @@ public class Lanceur {
 
 		IService service = (IService) appContext.getBean("serviceImpl");
 		User u = (User) appContext.getBean("user");
+		User u2 = (User) appContext.getBean("user");
+		u.setNom("toto");
+		System.out.println(u.getNom());
+		System.out.println(u2.getNom());
 
 		service.ajouterUser(u);
 		// 4- Detruire le contexte
