@@ -17,11 +17,11 @@ public class Lanceur {
 		IService service = (IService) appContext.getBean("serviceImpl");
 		User u = (User) appContext.getBean("user");
 		User u2 = (User) appContext.getBean("user");
-		u.setNom("y");
-		u.setPrenom("y");
+		u.setNom("z");
+		u.setPrenom("t");
 		System.out.println(u.getNom());
 
-		//service.ajouterUser(u);
+		service.ajouterUser(u);
 		
 		
 		List<User> list= service.listerUsers();
@@ -29,9 +29,15 @@ public class Lanceur {
 		{
 			System.out.println(user);
 		}
-		
+		System.out.println("liste o");
 		List<User> list2= service.listerParMC("o");
 		for(User user : list2)
+		{
+			System.out.println(user);
+		}
+		
+		List<User> list3= service.listerParNom("toto");
+		for(User user : list3)
 		{
 			System.out.println(user);
 		}
