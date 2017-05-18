@@ -60,7 +60,7 @@
 
 	<bean name="Louis" class="com.huios.DemoInjectionSpectacle.Musicien">
 		<property name="instrument" ref="violon" />
-		<property name="morceau" value="#{Olivier.morceau}" />
+<!-- 		<property name="morceau" value="#{Olivier.morceau}" /> -->
 	</bean>
 
 	<bean id="instrument" class="com.huios.DemoInjectionSpectacle.Saxophone">
@@ -85,23 +85,47 @@
 	<bean name="Martin" parent="parent">
 		<property name="instrument" ref="saxophone" />
 	</bean>
-	
+
 	<!-- Declaration de l'intercepteur -->
 	<bean id="spectateurs"
 		class="com.huios.DemoInjectionSpectacle.intercepteurs.Spectateurs" />
-		<!-- Mise en oeuvre du tissage -->
+	<!-- Mise en oeuvre du tissage -->
 	<aop:config>
-	<!-- Définition d'un lieu d'interception -->
-		<aop:pointcut id="servicePointcut" expression="execution(* *.jouer(..))"/>
+		<!-- Définition d'un lieu d'interception -->
+		<aop:pointcut id="servicePointcut" expression="execution(* *.jouer(..))" />
 		<aop:aspect id="spectateursAspect" ref="spectateurs">
-			<aop:before method="prendPlace" pointcut-ref="servicePointcut"/>
-			<aop:after-returning method="applaudit" pointcut-ref="servicePointcut" returning="result" />
+			<aop:before method="prendPlace" pointcut-ref="servicePointcut" />
+			<aop:after-returning method="applaudit"
+				pointcut-ref="servicePointcut" returning="result" />
 		</aop:aspect>
 	</aop:config>
 
+	<!-- Declaration de l'intercepteur -->
+	<bean id="musiciens"
+		class="com.huios.DemoInjectionSpectacle.intercepteurs.Musiciens" />
+	<!-- Mise en oeuvre du tissage -->
+	<aop:config>
+		<!-- Définition d'un lieu d'interception -->
+		<aop:pointcut id="sp" expression="execution(* *.performe(..))" />
+		<aop:aspect id="spectateursAspect" ref="musiciens">
+			<aop:around method="jeJoue" pointcut-ref="sp" />
+		</aop:aspect>
+	</aop:config>
+
+	<bean id="musiciensDeux"
+		class="com.huios.DemoInjectionSpectacle.intercepteurs.Musiciens2" />
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<aop:config>
+		<aop:aspect ref="musiciensDeux"></aop:aspect>
+	</aop:config>
+
+	<bean id="spectateursDeux"
+		class="com.huios.DemoInjectionSpectacle.intercepteurs.Spectateurs2" />
+	<aop:config>
+		<aop:aspect ref="spectateursDeux"></aop:aspect>
+	</aop:config>
 
 
-	
 
 
 </beans>
